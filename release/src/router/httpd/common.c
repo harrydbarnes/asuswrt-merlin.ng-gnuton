@@ -40,3 +40,20 @@
 #define MAX_LINE_SIZE 512
 #define UPNP_E_SUCCESS 0
 #define UPNP_E_INVALID_ARGUMENT -1
+
+struct json_object;
+
+/* Fallback for models whose prebuilt web_hook.o predates GPL 388_25633 */
+int __attribute__((weak)) nvram_modify_log(char *name, char *new, char *old, struct json_object *nvram_modify_obj)
+{
+	(void)name;
+	(void)new;
+	(void)old;
+	(void)nvram_modify_obj;
+	return 0;
+}
+
+void __attribute__((weak)) handle_nvram_modify_log(struct json_object *nvram_modify_obj)
+{
+	(void)nvram_modify_obj;
+}
