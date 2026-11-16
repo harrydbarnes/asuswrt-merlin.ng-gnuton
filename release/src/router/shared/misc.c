@@ -7713,3 +7713,8 @@ char *get_ddns_macaddr(void)
 
 	return mac;
 }
+
+/* Fallback for models whose prebuilt spwenc.o predates GPL 388_25633 */
+void __attribute__((weak)) init_asus_pp_eula(void)
+{
+}
