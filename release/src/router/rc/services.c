@@ -18872,8 +18872,20 @@ start_write_smb_conf();
 		/* on/brightness */
 		else {
 			if (AllLED == 0) {
+				char *ledg_scheme = nvram_get("ledg_scheme");
+				char saved_scheme[32];
+
+				saved_scheme[0] = '\0';
+				if (ledg_scheme && *ledg_scheme)
+					snprintf(saved_scheme, sizeof(saved_scheme), "%.31s", ledg_scheme);
+
 				nvram_set("AllLED", "1");
 				setAllLedNormal();
+
+				if (saved_scheme[0] != '\0' && !nvram_match("ledg_scheme", saved_scheme)) {
+					nvram_set("ledg_scheme", saved_scheme);
+					kill_pidfile_s("/var/run/ledg.pid", SIGTSTP);
+				}
 			}
 			if (led_val > 1) {
 				nvram_set_int("AllLED_brightness", led_val);

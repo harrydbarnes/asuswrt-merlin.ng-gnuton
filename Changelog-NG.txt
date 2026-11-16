@@ -4,6 +4,7 @@ Asuswrt-Merlin GNUton's builds Changelog
 3004.388.13_1-gnuton1 (16-Nov-2026)
   - UPDATED: Upstream code to 3004.388.13
   - UPDATED: Merged GPL 388_25633
+  - FIXED: Aura RGB ledg_scheme resetting after reboot or LED toggle (RT-AX82U/TUF-AX5400/RT-AX82U_V2)
 
 3004.388.13 (7-Nov-2026)
   - NEW: Migrated all devices to OpenSSL 3.5.

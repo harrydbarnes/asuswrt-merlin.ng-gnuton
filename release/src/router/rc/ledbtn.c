@@ -63,8 +63,9 @@ alarmtimer(unsigned long sec, unsigned long usec)
 	setitimer(ITIMER_REAL, &itv, NULL);
 }
 
-static void ledbtn_init()
+static void ledbtn_init(void)
 {
+	LED_status = nvram_get_int("AllLED");
 }
 
 static void ledbtn_alarmtimer()
@@ -165,8 +166,21 @@ static void ledbtn(int sig)
 			nvram_set_int("AllLED", 0);
 		nvram_commit();
 
-		if (LED_status)
+		if (LED_status) {
+			char *ledg_scheme = nvram_get("ledg_scheme");
+			char saved_scheme[32];
+
+			saved_scheme[0] = '\0';
+			if (ledg_scheme && *ledg_scheme)
+				snprintf(saved_scheme, sizeof(saved_scheme), "%.31s", ledg_scheme);
+
 			setAllLedNormal();
+
+			if (saved_scheme[0] != '\0' && !nvram_match("ledg_scheme", saved_scheme)) {
+				nvram_set("ledg_scheme", saved_scheme);
+				kill_pidfile_s("/var/run/ledg.pid", SIGTSTP);
+			}
+		}
 		else
 			setAllLedOff();
 	}
